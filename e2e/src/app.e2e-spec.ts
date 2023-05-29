@@ -1,3 +1,4 @@
+import { ElementArrayFinder, ElementFinder, by } from 'protractor';
 import { AppPage } from './app.po';
 
 /**
@@ -11,10 +12,10 @@ import { AppPage } from './app.po';
  *   2. And the word "Davis" should be highlighted
  *
  */
+const page = new AppPage();
 
 describe('User List App', () => {
-  const page = new AppPage();
-
+  
   beforeEach(async () => {
     await page.getDashboard();
   });
@@ -28,4 +29,26 @@ describe('User List App', () => {
     const users = page.getListItems();
     expect(await users.count()).toBe(16);
   });
+});
+
+describe('Filter tests', () => {
+  let input: ElementFinder;
+  let items: ElementArrayFinder;
+
+  beforeEach(async () => {
+    input = page.getInput();
+    items = page.getListItems();
+    await input.sendKeys('davis');
+  });
+
+  it('should filter lis on user search', async () => {
+    expect(await items.count()).toBe(2);
+  });
+
+  it('should gighlight gilter text', async () => {
+    (await items).forEach(item => {
+      const span = item.element(by.css('span'));
+      expect(span.getAttribute('class').toBe('highlight-text'));
+    });
+  })
 });

@@ -1,4 +1,4 @@
-import { browser, element, by, ElementArrayFinder } from 'protractor';
+import { browser, element, by, ElementArrayFinder, ElementFinder } from 'protractor';
 
 export class AppPage {
 
@@ -14,5 +14,9 @@ export class AppPage {
   public getListItems(): ElementArrayFinder {
     const items = by.css('li');
     return element.all(items);
+  }
+
+  public getInput(): ElementFinder {
+    return element(by.css('input'));
   }
 }
